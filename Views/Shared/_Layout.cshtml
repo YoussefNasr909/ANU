@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="~/css/anu/logo.png">
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>@ViewData["Title"] - Assiut National University</title>
+</head>
+<body>
+    <section class="@(ViewData["HeaderClass"] ?? "header")">
+        <nav>
+            <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/anu/logo.png"></a>
+            <div class="nav-links">
+                <ul>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Faculties" asp-action="Index">Faculties</a></li>
+                    <li><a asp-area="" asp-controller="Departments" asp-action="Index">Departments</a></li>
+                    <li><a asp-area="" asp-controller="Services" asp-action="Index">Services</a></li>
+                    <li><a asp-area="" asp-controller="Staff" asp-action="Index">Staff</a></li>
+                    <li><a asp-area="" asp-controller="News" asp-action="Index">News</a></li>
+                    <li><a asp-area="" asp-controller="Blog" asp-action="Index">Blog</a></li>
+                    <li><a asp-area="" asp-controller="Contact" asp-action="Index">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        @if (ViewData["HeaderContent"] != null)
+        {
+            @Html.Raw(ViewData["HeaderContent"])
+        }
+    </section>
+
+    @RenderBody()
+
+    <!-- Footer -->
+    <section class="footer">
+        <h4>About Us</h4>
+        <p>Assiut University is a governmental university which mobilizes and directs its potentialities for the realization of its vision by providing the education required for the present and the future<br>graduating generations that can compete in labor market at both the local and international levels, and qualifying for excellence in the development of scientific research and technology<br>and research programs which contribute to the society development within university ethics.</p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/AssuitANU/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>&copy; @DateTime.Now.Year - Assiut National University</p>
+    </section>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
