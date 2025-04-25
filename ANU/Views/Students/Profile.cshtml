@@ -1,0 +1,33 @@
+@model Student
+@{
+    ViewData["Title"] = "Student Profile";
+    ViewData["HeaderClass"] = "sub-header";
+    ViewData["HeaderContent"] = "<h1>Student Profile</h1>";
+}
+
+<section class="about-us">
+    <div class="row">
+        <div class="about-col">
+            <h1>@Model.FullName</h1>
+            <p>Student ID: @Model.StudentId</p>
+            <p>Faculty: @Model.Faculty</p>
+            <p>Department: @Model.Department</p>
+            <p>Year: @Model.Year</p>
+            <p>Email: @Model.Email</p>
+            
+            <h3>Enrolled Courses</h3>
+            <ul>
+                @foreach (var course in Model.EnrolledCourses)
+                {
+                    <li>@course.Name (@course.Code)</li>
+                }
+            </ul>
+            
+            <a asp-controller="Results" asp-action="Index" class="btn">View Results</a>
+            <a asp-controller="Schedules" asp-action="Index" class="btn">View Schedule</a>
+        </div>
+        <div class="about-col">
+            <img src="@Model.ProfileImageUrl" alt="@Model.FullName">
+        </div>
+    </div>
+</section>

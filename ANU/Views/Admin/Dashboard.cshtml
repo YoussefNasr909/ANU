@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["HeaderClass"] = "sub-header";
+    ViewData["HeaderContent"] = "<h1>Admin Dashboard</h1>";
+}
+
+<section class="about-us">
+    <div class="admin-dashboard">
+        <h1>Welcome, @ViewBag.AdminName</h1>
+        
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <h3>Students</h3>
+                <p class="stat-number">@ViewBag.StudentCount</p>
+                <a asp-controller="Admin" asp-action="Students" class="btn">Manage</a>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Faculty</h3>
+                <p class="stat-number">@ViewBag.FacultyCount</p>
+                <a asp-controller="Admin" asp-action="Faculties" class="btn">Manage</a>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Courses</h3>
+                <p class="stat-number">@ViewBag.CourseCount</p>
+                <a asp-controller="Admin" asp-action="Courses" class="btn">Manage</a>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Staff</h3>
+                <p class="stat-number">@ViewBag.StaffCount</p>
+                <a asp-controller="Admin" asp-action="Staff" class="btn">Manage</a>
+            </div>
+        </div>
+        
+        <div class="dashboard-actions">
+            <h2>Quick Actions</h2>
+            <div class="action-grid">
+                <a asp-controller="Admin" asp-action="CreateAnnouncement" class="action-card">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Create Announcement</span>
+                </a>
+                
+                <a asp-controller="Admin" asp-action="UploadResults" class="action-card">
+                    <i class="fas fa-file-upload"></i>
+                    <span>Upload Results</span>
+                </a>
+                
+                <a asp-controller="Admin" asp-action="ManageSchedules" class="action-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Manage Schedules</span>
+                </a>
+                
+                <a asp-controller="Admin" asp-action="CreateNews" class="action-card">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Create News</span>
+                </a>
+                
+                <a asp-controller="Admin" asp-action="ManageUsers" class="action-card">
+                    <i class="fas fa-users"></i>
+                    <span>Manage Users</span>
+                </a>
+                
+                <a asp-controller="Admin" asp-action="SystemSettings" class="action-card">
+                    <i class="fas fa-cog"></i>
+                    <span>System Settings</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <ul class="activity-list">
+                @foreach (var activity in ViewBag.RecentActivities)
+                {
+                    <li class="activity-item">
+                        <span class="activity-time">@activity.Timestamp.ToString("HH:mm")</span>
+                        <span class="activity-user">@activity.User</span>
+                        <span class="activity-action">@activity.Action</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
