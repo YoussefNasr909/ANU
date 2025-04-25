@@ -1,15 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using ANU.Data;
+using System.Threading.Tasks;
 using ANU.Models;
 
 namespace AssiutUniversity.Controllers
 {
     public class DepartmentsController : Controller
     {
+        // STEP 1: Add a private field for the database context
+        // private readonly ApplicationDbContext _context;
+
+        // STEP 2: Inject the database context through constructor injection
+        // public DepartmentsController(ApplicationDbContext context)
+        // {
+        //     _context = context;
+        // }
+
         public IActionResult Index(int? facultyId = null)
         {
-            //DB
+            // STEP 3: Replace hardcoded data with database query
+            // This would typically come from a database
+            // var query = _context.Departments.AsQueryable();
+            //
+            // if (facultyId.HasValue)
+            // {
+            //     query = query.Where(d => d.FacultyId == facultyId.Value);
+            //     
+            //     // Get faculty name for display
+            //     var faculty = await _context.Faculties.FindAsync(facultyId.Value);
+            //     ViewBag.FacultyName = faculty?.Name ?? "Unknown Faculty";
+            // }
+            // else
+            // {
+            //     ViewBag.FacultyName = "All Faculties";
+            // }
+            //
+            // var departments = await query.ToListAsync();
+
             var departments = new List<Department>
             {
                 new Department
@@ -49,11 +79,11 @@ namespace AssiutUniversity.Controllers
                 }
             };
 
-            
+            // Filter departments by faculty ID if provided
             if (facultyId.HasValue)
             {
                 departments = departments.Where(d => d.FacultyId == facultyId.Value).ToList();
-                
+                // Set the faculty name for display
                 ViewBag.FacultyName = facultyId == 1 ? "Faculty of Computers & Artificial Intelligence" :
                                      facultyId == 2 ? "Faculty of Medicine" :
                                      "Faculty of Engineering & Applied Sciences";
@@ -68,7 +98,17 @@ namespace AssiutUniversity.Controllers
 
         public IActionResult Details(int id)
         {
+            // STEP 4: Replace hardcoded data with database query
             // This would typically come from a database
+            // var department = await _context.Departments
+            //     .Include(d => d.Faculty)
+            //     .FirstOrDefaultAsync(d => d.Id == id);
+            //
+            // if (department == null)
+            // {
+            //     return NotFound();
+            // }
+
             var department = new Department
             {
                 Id = id,

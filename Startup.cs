@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using ANU.Data;
 
 namespace ANU
 {
@@ -18,6 +20,23 @@ namespace ANU
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add database context to the services
+            // This is where you configure the database connection
+            // The connection string should be stored in appsettings.json
+            services.AddDbContext<ApplicationDbContext>(options =>
+                // Use SQL Server as the database provider
+                // You can also use other providers like MySQL, PostgreSQL, or SQLite
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            // Alternatively, for development or testing, you could use SQLite:
+            // services.AddDbContext<ApplicationDbContext>(options =>
+            //     options.UseSqlite(Configuration.GetConnectionString("SqliteConnection")));
+
+            // Add ASP.NET Core Identity for authentication and authorization
+            // services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //     .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
         }
 
@@ -39,6 +58,7 @@ namespace ANU
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
