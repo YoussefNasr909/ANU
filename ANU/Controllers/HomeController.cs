@@ -2,8 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ANU.Models;
 
-
-namespace AssiutUniversity.Controllers
+namespace ANU.Controllers
 {
     public class HomeController : Controller
     {

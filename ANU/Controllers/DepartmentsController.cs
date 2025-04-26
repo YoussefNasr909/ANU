@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using ANU.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using ANU.Data;
 using System.Threading.Tasks;
-using ANU.Models;
+
 
 namespace AssiutUniversity.Controllers
 {
@@ -109,13 +109,57 @@ namespace AssiutUniversity.Controllers
             //     return NotFound();
             // }
 
-            var department = new Department
+            // Create department data based on the id parameter
+            Department department;
+
+            switch (id)
             {
-                Id = id,
-                Name = "Computer Science",
-                Description = "The Computer Science department focuses on algorithms, programming languages, and software development.",
-                FacultyId = 1
-            };
+                case 2:
+                    department = new Department
+                    {
+                        Id = 2,
+                        Name = "Information Systems",
+                        Description = "The Information Systems department focuses on database management, system analysis, and information technology infrastructure.",
+                        FacultyId = 1
+                    };
+                    break;
+                case 3:
+                    department = new Department
+                    {
+                        Id = 3,
+                        Name = "Artificial Intelligence",
+                        Description = "The Artificial Intelligence department focuses on machine learning, neural networks, and intelligent systems.",
+                        FacultyId = 1
+                    };
+                    break;
+                case 4:
+                    department = new Department
+                    {
+                        Id = 4,
+                        Name = "Internal Medicine",
+                        Description = "The Internal Medicine department focuses on the diagnosis and treatment of adult diseases.",
+                        FacultyId = 2
+                    };
+                    break;
+                case 5:
+                    department = new Department
+                    {
+                        Id = 5,
+                        Name = "Surgery",
+                        Description = "The Surgery department focuses on surgical procedures and techniques.",
+                        FacultyId = 2
+                    };
+                    break;
+                default: // Default to Computer Science (id = 1)
+                    department = new Department
+                    {
+                        Id = 1,
+                        Name = "Computer Science",
+                        Description = "The Computer Science department focuses on algorithms, programming languages, and software development.",
+                        FacultyId = 1
+                    };
+                    break;
+            }
 
             return View(department);
         }

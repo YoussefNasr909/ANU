@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ANU.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ANU
 {
@@ -23,15 +24,28 @@ namespace ANU
             // Add database context to the services
             // This is where you configure the database connection
             // The connection string should be stored in appsettings.json
+
+            // OPTION 1: Use SQL Server (requires Microsoft.EntityFrameworkCore.SqlServer package)
             services.AddDbContext<ApplicationDbContext>(options =>
-                // Use SQL Server as the database provider
-                // You can also use other providers like MySQL, PostgreSQL, or SQLite
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            // Alternatively, for development or testing, you could use SQLite:
+            // OPTION 2: Use SQLite instead (requires Microsoft.EntityFrameworkCore.Sqlite package)
             // services.AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseSqlite(Configuration.GetConnectionString("SqliteConnection")));
+            //     options.UseSqlite(
+            //         Configuration.GetConnectionString("SqliteConnection")));
+
+            // OPTION 3: Use in-memory database for development/testing (requires Microsoft.EntityFrameworkCore.InMemory package)
+            // services.AddDbContext<ApplicationDbContext>(options =>
+            //     options.UseInMemoryDatabase("ANU_Database"));
+
+            // Add cookie authentication
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                });
 
             // Add ASP.NET Core Identity for authentication and authorization
             // services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)

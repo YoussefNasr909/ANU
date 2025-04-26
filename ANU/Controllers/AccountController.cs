@@ -2,6 +2,9 @@
 using ANU.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ANU.Controllers
 {
@@ -24,7 +27,7 @@ namespace ANU.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -40,8 +43,29 @@ namespace ANU.Controllers
                 //     return View(model);
                 // }
 
-                // In a real application, you would validate credentials against a database
-                // For demo purposes, we'll just redirect to home page
+                // For demo purposes, we'll create a simple authentication cookie
+                // In a real application, you would validate against a database
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, model.Email),
+                    new Claim(ClaimTypes.Email, model.Email),
+                    // Add more claims as needed
+                };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = model.RememberMe
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                // Redirect to home page after successful login
                 return RedirectToAction("Index", "Home");
             }
             return View(model);
@@ -77,13 +101,14 @@ namespace ANU.Controllers
             return View(model);
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             // STEP 5: Replace with actual logout logic
             // await _signInManager.SignOutAsync();
             // return RedirectToAction("Index", "Home");
 
-            // In a real application, you would sign out the user
+            // For demo purposes, sign out using cookie authentication
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
     }
