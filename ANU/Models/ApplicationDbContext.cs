@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ANU.Models;
 
-namespace ANU.Data
+namespace ANU.Models
 {
-    // This is the main database context class that will be used to interact with the database
-    // It inherits from DbContext which is the primary class for database interactions in Entity Framework Core
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -12,8 +9,8 @@ namespace ANU.Data
         {
         }
 
-        // Define DbSet properties for each entity that should be stored in the database
-        // Each DbSet represents a table in the database
+        // Define DbSet properties for each entity
+        public DbSet<User> Users { get; set; } = null!;
         public DbSet<Faculty> Faculties { get; set; } = null!;
         public DbSet<Department> Departments { get; set; } = null!;
         public DbSet<AcademicProgram> Programs { get; set; } = null!;
@@ -26,26 +23,40 @@ namespace ANU.Data
         public DbSet<NewsItem> NewsItems { get; set; } = null!;
         public DbSet<BlogPost> BlogPosts { get; set; } = null!;
 
-        // Override OnModelCreating to configure entity relationships, constraints, and seed data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // Configure relationships between entities
-            // Example: Configure one-to-many relationship between Faculty and Department
             modelBuilder.Entity<Department>()
                 .HasOne(d => d.Faculty)
                 .WithMany()
                 .HasForeignKey(d => d.FacultyId);
 
-            // Example: Configure one-to-many relationship between Faculty and AcademicProgram
             modelBuilder.Entity<AcademicProgram>()
                 .HasOne<Faculty>()
                 .WithMany(f => f.Programs)
                 .HasForeignKey("FacultyId");
 
-            // Add seed data
-            // Example: Seed initial faculties
+            // Configure User relationships
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Faculty)
+                .WithMany()
+                .HasForeignKey(u => u.FacultyId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Department)
+                .WithMany()
+                .HasForeignKey(u => u.DepartmentId)
+                .IsRequired(false);
+
+            // Make email unique
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            // Seed data for faculties
             modelBuilder.Entity<Faculty>().HasData(
                 new Faculty
                 {

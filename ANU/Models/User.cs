@@ -1,16 +1,29 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ANU.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class User
     {
-        // Custom user properties
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        public string PasswordHash { get; set; } = string.Empty;
+
+        [Required]
         public string FirstName { get; set; } = string.Empty;
+
+        [Required]
         public string LastName { get; set; } = string.Empty;
+
+        public string? ProfileImageUrl { get; set; }
+
         public DateTime DateRegistered { get; set; } = DateTime.UtcNow;
-        public string ProfileImageUrl { get; set; } = string.Empty;
 
         // Optional: Faculty and Department relationships
         public int? FacultyId { get; set; }
@@ -26,7 +39,8 @@ namespace ANU.Models
         // For staff
         public string? StaffId { get; set; }
         public string? Title { get; set; }
-        public string? Office { get; set; }
-        public string? OfficeHours { get; set; }
+
+        // Role (Admin, Student, Staff, etc.)
+        public string Role { get; set; } = "Student";
     }
 }

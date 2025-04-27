@@ -4,8 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using ANU.Data;
+using ANU.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ANU.Services;
+using System;
 
 namespace ANU
 {
@@ -21,35 +23,28 @@ namespace ANU
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add database context to the services
-            // This is where you configure the database connection
-            // The connection string should be stored in appsettings.json
-
-            // OPTION 1: Use SQL Server (requires Microsoft.EntityFrameworkCore.SqlServer package)
+            // Add database context
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            // OPTION 2: Use SQLite instead (requires Microsoft.EntityFrameworkCore.Sqlite package)
-            // services.AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseSqlite(
-            //         Configuration.GetConnectionString("SqliteConnection")));
+            // Add HTTP context accessor
+            services.AddHttpContextAccessor();
 
-            // OPTION 3: Use in-memory database for development/testing (requires Microsoft.EntityFrameworkCore.InMemory package)
-            // services.AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseInMemoryDatabase("ANU_Database"));
+            // Add custom authentication service
+            services.AddScoped<AuthService>();
 
             // Add cookie authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromDays(14);
                     options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.SlidingExpiration = true;
                 });
-
-            // Add ASP.NET Core Identity for authentication and authorization
-            // services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //     .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();
         }
