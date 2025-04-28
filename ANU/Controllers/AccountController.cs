@@ -21,6 +21,7 @@ namespace ANU.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -32,18 +33,14 @@ namespace ANU.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ViewData["LoginError"] = "Invalid login attempt. Please check your email and password.";
             }
 
             return View(model);
         }
 
-        public IActionResult Register()
-        {
-            return View();
-        }
-
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -66,11 +63,12 @@ namespace ANU.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Email is already in use.");
+                    ViewData["RegisterError"] = "Email is already in use. Please try a different email address.";
                 }
             }
 
-            return View(model);
+            // If we got this far, something failed, redisplay form
+            return View("Login");
         }
 
         [Authorize]

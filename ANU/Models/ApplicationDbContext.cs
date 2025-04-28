@@ -22,6 +22,7 @@ namespace ANU.Models
         public DbSet<Result> Results { get; set; } = null!;
         public DbSet<NewsItem> NewsItems { get; set; } = null!;
         public DbSet<BlogPost> BlogPosts { get; set; } = null!;
+        public DbSet<Contact> Contacts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
