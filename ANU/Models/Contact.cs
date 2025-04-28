@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+<<<<<<< HEAD
 using System.ComponentModel.DataAnnotations.Schema;
+=======
+>>>>>>> 7f9970e15257d02782aba5458dc5b731517a9e5b
 
 namespace ANU.Models
 {
@@ -23,9 +26,15 @@ namespace ANU.Models
 
         [Required]
         public string Message { get; set; } = string.Empty;
+<<<<<<< HEAD
         [NotMapped]
         public DateTime DateSubmitted { get; set; } = DateTime.UtcNow;
         [NotMapped]
+=======
+
+        public DateTime DateSubmitted { get; set; } = DateTime.UtcNow;
+
+>>>>>>> 7f9970e15257d02782aba5458dc5b731517a9e5b
         public bool IsRead { get; set; } = false;
     }
 }
